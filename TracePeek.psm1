@@ -14,9 +14,11 @@ function Start-TracePeek
     [CmdletBinding()]
     param(
         $SessionName = "TracePeekDefaultSessionName",
-        [string[]]$providers
+        [string[]]$Providers,
+        [TracePeek.TracePeekProjectionStyle]$ProjectionStyle
     )
     $tpc = New-TracePeekController -SessionName $SessionName
+    
     $providersList = New-Object -TypeName System.Collections.Generic.List`[string]
     foreach($provider in $providers){
         $providersList.Add($provider)
@@ -26,6 +28,8 @@ function Start-TracePeek
     ##[TracePeek.Utility]::HandleConsoleCancelKeyPress($tpc)
     Write-Host "Starting up..."
     Write-Host "Press ALT+s to stop"
+    if($null -eq $ProjectionStyle){$tpc.StartPeek()}
+    else{$tpc.StartPeek($ProjectionStyle)}
     $null = $tpc.StartPeek()
     $consoleCancellationRequested = $false
     while($consoleCancellationRequested -eq $false)
