@@ -9,7 +9,7 @@ function New-TracePeekController
     New-Object -TypeName TracePeek.TracePeekController -ArgumentList $SessionName
 }
 
-function Invoke-TracePeek
+function Start-TracePeek
 {
     [CmdletBinding()]
     param(
