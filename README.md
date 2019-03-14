@@ -12,22 +12,24 @@ Powershell example:
 Import-Module .\TracePeek.psm1
 
 Start-TracePeek -Providers "Microsoft-Windows-Wordpad" | Select-Object -Property ProviderName,Message
+```
+```
 Starting up...
 Press ALT+s to stop
 
 ## Now launch Wordpad to get this output. Don't forget to enter
 ## ALT+s in the console to stop and clean up resources.
-## 
-## ProviderName              Message
-## ------------              -------
-## Microsoft-Windows-Wordpad Intializing current instance of the application
-## Microsoft-Windows-Wordpad Wordpad Launch Start.
-## Microsoft-Windows-Wordpad Wordpad Launch End.
-## Microsoft-Windows-Wordpad Exiting current Instance of the application
+ 
+ ProviderName              Message
+ ------------              -------
+ Microsoft-Windows-Wordpad Intializing current instance of the application
+ Microsoft-Windows-Wordpad Wordpad Launch Start.
+ Microsoft-Windows-Wordpad Wordpad Launch End.
+ Microsoft-Windows-Wordpad Exiting current Instance of the application
 Cleaning up...
 ```
 
-By default TracePeek emits each event as a PSCustomObject where the property names include standard ETW items (e.g. Providername, Keywords), plus named properties based on the event payload. Alternative object shapes are available for cases where this is not optimal. E.g., if you were going to export the results to CSV you might prefer the payload properties to have fixed names like "Field1","Field2", etc. rather than "EventA-HasThisProperty","EventB-HasThisOtherProperty". For example:
+By default TracePeek emits each event as a PSCustomObject where the property names include standard ETW items (e.g. ProviderName, Keywords), plus named properties based on the event payload. Alternative object shapes are available via the  -ProjectionStyle parameter. For example, if you were going to export the results to CSV you might prefer the payload properties to have fixed names like "Field1","Field2", etc. rather than "EventA-HasThisProperty","EventB-HasThisOtherProperty".
 ```powershell
 Start-TracePeek -Providers "Microsoft-Windows-Wordpad" -ProjectionStyle [TracePeek.TracePeekProjectionStyle]::NumberedPayloadProperties
 ```
