@@ -28,9 +28,8 @@ function Start-TracePeek
     ##[TracePeek.Utility]::HandleConsoleCancelKeyPress($tpc)
     Write-Host "Starting up..."
     Write-Host "Press ALT+s to stop"
-    if($null -eq $ProjectionStyle){$tpc.StartPeek()}
-    else{$tpc.StartPeek($ProjectionStyle)}
-    $null = $tpc.StartPeek()
+    if($null -eq $ProjectionStyle){$null = $tpc.StartPeek()}
+    else{$null = $tpc.StartPeek($ProjectionStyle)}
     $consoleCancellationRequested = $false
     while($consoleCancellationRequested -eq $false)
     {
