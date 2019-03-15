@@ -4,15 +4,23 @@
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
    "configurations": [
+
        {
            "type": "PowerShell",
            "request": "launch",
            "preLaunchTask": "publish",
            "name": "TracePeekExample.ps1",
            "createTemporaryIntegratedConsole": true,
-           "script": "${workspaceFolder}/bin/Debug/netcoreapp2.2/win10-x64/publish/TracePeekExample.ps1",
+           "script": "${workspaceFolder}/bin/PSModulePublish/TracePeek/TracePeekExample.ps1",
            "args": [],
-           "cwd": "${workspaceFolder}/bin/Debug/netcoreapp2.2/win10-x64/publish/"
+           "cwd": "${workspaceFolder}/bin/PSModulePublish/TracePeek"
+       },
+       {
+           "type": "PowerShell",
+           "request": "launch",
+           "preLaunchTask": "publish",
+           "name": "Publish and navigate",
+           "cwd": "${workspaceFolder}/bin/PSModulePublish"
        },
         {
             "name": ".NET Core Launch (console)",

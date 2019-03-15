@@ -16,7 +16,9 @@
             "command": "dotnet",
             "type": "process",
             "args": [
-                "publish"
+                "publish",
+                "-o",
+                "${workspaceFolder}/bin/PSModulePublish/TracePeek"
             ],
             "problemMatcher": "$msCompile"
         }

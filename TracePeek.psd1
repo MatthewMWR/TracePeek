@@ -12,10 +12,10 @@
  RootModule = '.\TracePeek.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '0.0.5'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+# CompatiblePSEditions = @('Core')
 
 # ID used to uniquely identify this module
 GUID = 'af3a637c-d305-42e0-8111-f9572aa76f56'
@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) Matthew Reynolds. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+ Description = 'Interactive view for Event Tracing for Windows (ETW) events live as they happen.'
 
 # Minimum version of the PowerShell engine required by this module
  PowerShellVersion = '6.0'
