@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-Add-Type -Path .\TracePeek.dll -ErrorAction Stop
+Add-Type -Path (Join-Path $psscriptRoot 'TracePeek.dll') -ErrorAction Stop
 
 function New-TracePeekController
 {
