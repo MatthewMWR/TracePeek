@@ -22,17 +22,17 @@ Start-TracePeek -Providers "Microsoft-Windows-Wordpad" | Select-Object -Property
 ## Now launch Wordpad to get some events
 ```
 ```
-Starting up...
-Press ALT+s to stop
- 
- ProviderName              Message
- ------------              -------
- Microsoft-Windows-Wordpad Intializing current instance of the application
- Microsoft-Windows-Wordpad Wordpad Launch Start.
- Microsoft-Windows-Wordpad Wordpad Launch End.
- Microsoft-Windows-Wordpad Exiting current Instance of the application
-
-Cleaning up...
+  Starting up...
+  Press ALT+s to stop
+   
+   ProviderName              Message
+   ------------              -------
+   Microsoft-Windows-Wordpad Intializing current instance of the application
+   Microsoft-Windows-Wordpad Wordpad Launch Start.
+   Microsoft-Windows-Wordpad Wordpad Launch End.
+   Microsoft-Windows-Wordpad Exiting current Instance of the application
+  
+  Cleaning up...
 ```
 
 ## What is the output?
@@ -40,7 +40,24 @@ By default TracePeek projects each event as a PSCustomObject. Each object has pr
 
 Alternative object shapes are available via the -ProjectionStyle parameter. For example, if you were going to export the results to CSV, or wanted to always select the first payload field, you might prefer the payload properties to have fixed names like "Field1","Field2", etc. rather than "EventAHasThisProperty","EventBHasThisOtherProperty".
 ```powershell
-Start-TracePeek -Providers "Microsoft-Windows-GroupPolicy" -ProjectionStyle NumberedPayloadProperties
+Start-TracePeek -Providers 'Microsoft-Windows-GroupPolicy' -ProjectionStyle NumberedNestedPayloadProperties | Format-Table Name,Field0,Field1
+
+## Now run gpupdate.exe /force in another cmd prompt
+```
+```
+  Starting up...
+  Press ALT+s to stop
+  
+  Name          Field0                               Field1
+  ----          ------                               ------
+  EventID(4004) PolicyActivityId : 166a7d37-f0cc-458 PrincipalSamName : …
+  EventID(5340) PolicyApplicationMode : Background    :
+  EventID(5311) PolicyProcessingMode : "No loopback   :
+  EventID(4126) IsMachine : True                      :
+  EventID(5257) IsMachine : True                       PolicyDownloadTimeElapsedInMilliseconds : 6…
+  EventID(5126) IsMachine : True                     IsBackgroundProcessing : False
+  EventID(5312) DescriptionString : None             GPOInfoList :
+  EventID(5313) DescriptionString : Local Group Poli GPOInfoList : <GPO ID="Local Group   Policy">…
 ```
 
 Now stop reading, go play with TracePeek, and provide feedback. Thanks.
@@ -50,21 +67,21 @@ Now stop reading, go play with TracePeek, and provide feedback. Thanks.
 People with healthy relationships to reality should probably skip this section
 
 ### Relationship to other tools
-TracePeek is a thin wrapper around Vance Morrison's wonderful TraceEvent library. The TraceEvent library provides broad coverage of diverse ETW scenarios, while TracePeek optimizes for my narrow use case (interactivity & PowerShell friendliness).
+TracePeek is intended to fill a narrow gap in the ETW ecosystem (interactvity and PowerShell friendliness), not to compete with tools like WPT/WPR/xpert/WPA/PerfView, etc. which are already great at other workflows.
 
-TracePeek is intended to fill a narrow gap in the ETW ecosystem (interactviity and PowerShell friendliness), not to compete with tools like WPT/WPR/xpert/WPA/PerfView, etc. which are already great at other workflows.
+TracePeek is a thin wrapper around Vance Morrison's wonderful TraceEvent library. The TraceEvent library provides broad coverage of diverse ETW scenarios, while TracePeek optimizes for a specific use case (interactivity & PowerShell friendliness).
 
 ### Levels and Keywords
-For providers with a mix of high and low volume events, ETW Levels and Keywords can be an efficient filtering mechanism. TracePeek allows (like xperf) for colon separated Levels and Keywords. In other words:
--Providers "Microsoft-Windows-Winlogon:0xFFFF:0xFFFFFFFFFFFFFFFF" is equivalent to
--Providers "Microsoft-Windows-Winlogon"
+For providers with a mix of high and low volume events, ETW Levels and Keywords can be an efficient filtering mechanism. Like xperf, TracePeek allows for including Levels and Keywords in the input, along with provider names. Example:
+-Providers 'Microsoft-Windows-Winlogon:0xFFFF:0xFFFFFFFFFFFFFFFF' is equivalent to
+-Providers 'Microsoft-Windows-Winlogon'
 
 ### Valid identifiers for providers
-TracePeek doesn't do anything special to parse provider identifiers specified by the caller. The caller is subject to normal ETW rules about provider names, for example:
-- If you know the Guid for the provider, that should always work
-- You can use the name of the provider *if* that name can be resolved to a Guid at run-time. The two known cases of this are:
+TracePeek doesn't do anything special to parse provider identifiers specified by the caller. The caller is subject to normal ETW behavior about provider names, for example:
+- Specifying the provider by Guid (like -Providers 'DBE9B383-7CF3-4331-91CC-A3CB16A3B538') is the most reliable, but sacrifices readability and puts the burden on the caller to know the Guid
+- Specifying the provider by name (like -Providers 'Microsoft-Windows-Winlogon') is more readable, but works only *if* that name can be resolved to a Guid at run-time. The two known cases of this are:
   - The provider name is registerd with the OS-- i.e., it can be seen in the output of logman.exe providers
-  - -OR- Whoever created the provider did not declare a specific Guid, and instead allowed the provider Guid to be a function of the provider name (aka the EventSource pattern).
+  - -OR- The original author of the provider used the Tracelogging/EventSource pattern, and did not declare a specific Guid, allowing the Guid to be a function of the name.
 
 ### What about the NT kernel provider, kernel flags, etc.?
 Given that kernel events tend to be very high volume, I have never had a scenario where I wanted to use TracePeek with them. If there is a cool scenario for using TracePeek with the NT kernel provider we could add support, probably using named groups of kernel flags similar to xpert and PerfView.
