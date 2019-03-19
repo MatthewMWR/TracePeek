@@ -3,15 +3,6 @@ Set-StrictMode -Version Latest
 
 Add-Type -Path (Join-Path $psscriptRoot 'TracePeek.dll') -ErrorAction Stop
 
-function New-TracePeekController
-{
-    param(
-        [Parameter(Mandatory=$true)]
-        [string]$SessionName
-    )
-    New-Object -TypeName TracePeek.TracePeekController -ArgumentList $SessionName
-}
-
 function Start-TracePeek
 {
     [CmdletBinding(PositionalBinding=$true)]
@@ -19,9 +10,9 @@ function Start-TracePeek
         [Parameter(Mandatory=$true)]
         [string[]]$Providers,
         [TracePeek.TracePeekProjectionStyle]$ProjectionStyle,
-        [string]$SessionName = "TracePeek_DefaultSessionName"
+        [string]$SessionName
     )
-    $tpc = New-TracePeekController -SessionName $SessionName
+    $tpc = New-Object -TypeName TracePeek.TracePeekController -ArgumentList $SessionName
     
     $providersList = New-Object -TypeName System.Collections.Generic.List`[string]
     foreach($provider in $providers){

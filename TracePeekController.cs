@@ -5,16 +5,21 @@ using Microsoft.Diagnostics.Tracing;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Management.Automation;
+using System.Diagnostics.Tracing;
 
 namespace TracePeek
 {
     public class TracePeekController : IDisposable
     {
-        public TracePeekController(string sessionName = "TracePeekDefaultSession")
+        public TracePeekController(string sessionName)
         {
+            if(String.IsNullOrEmpty(sessionName))
+                sessionName = "TracePeek_DefaultSession";
             SessionName = sessionName;
             ThisTraceEventSession = new TraceEventSession(sessionName);
         }
+
+        private static EventSource log = new EventSource("TracePeek");
 
         public TraceEventSession ThisTraceEventSession {get;}
 
@@ -58,7 +63,17 @@ namespace TracePeek
                     if(OnTracePeekEvent != null) OnTracePeekEvent(new PSObject(TracePeekEvent.CreateWithoutPayloadProperties(traceEvent)));};
 
             else throw new ArgumentOutOfRangeException(nameof(projectionStyle));
-            return Task.Run( () => ThisTraceEventSession.Source.Process());
+
+            return Task.Run( () => {
+                Task.Run(() => {
+                    while(!isCancellationRequested)
+                    {
+                        log.Write("Hearbeat", new { timestampAtCallsite = DateTime.UtcNow });
+                        Task.Delay(5000).Wait();
+                    }
+                });
+                ThisTraceEventSession.Source.Process();
+            });
         }
         public void StopPeek()
         {
