@@ -11,11 +11,12 @@ function New-TracePeekController
 
 function Start-TracePeek
 {
-    [CmdletBinding()]
+    [CmdletBinding(PositionalBinding=$true)]
     param(
-        $SessionName = "TracePeekDefaultSessionName",
+        [Parameter(Mandatory=$true)]
         [string[]]$Providers,
-        [TracePeek.TracePeekProjectionStyle]$ProjectionStyle
+        [TracePeek.TracePeekProjectionStyle]$ProjectionStyle,
+        $SessionName = "TracePeekDefaultSessionName"
     )
     $tpc = New-TracePeekController -SessionName $SessionName
     
