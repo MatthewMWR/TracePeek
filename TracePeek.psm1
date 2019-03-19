@@ -5,8 +5,11 @@ Add-Type -Path (Join-Path $psscriptRoot 'TracePeek.dll') -ErrorAction Stop
 
 function New-TracePeekController
 {
-    param($SessionName = "TracePeekDefaultSessionName")
-    New-Object -TypeName TracePeek.TracePeekController -ArgumentList $SessionName
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$SessionName
+    )
+        New-Object -TypeName TracePeek.TracePeekController -ArgumentList $SessionName
 }
 
 function Start-TracePeek
@@ -16,7 +19,7 @@ function Start-TracePeek
         [Parameter(Mandatory=$true)]
         [string[]]$Providers,
         [TracePeek.TracePeekProjectionStyle]$ProjectionStyle,
-        $SessionName = "TracePeekDefaultSessionName"
+        [string]$SessionName = "TracePeek_DefaultSessionName"
     )
     $tpc = New-TracePeekController -SessionName $SessionName
     
@@ -25,12 +28,12 @@ function Start-TracePeek
         $providersList.Add($provider)
     }
     $tpc.EnableProviders($providersList)
-    $eventSubscriberJob = Register-ObjectEvent -InputObject $tpc -EventName OnTracePeekEvent -SourceIdentifier $SessionName #-Action {$args}
-    ##[TracePeek.Utility]::HandleConsoleCancelKeyPress($tpc)
-    Write-Host "Starting up..."
-    Write-Host "Press ALT+s to stop"
+    $eventSubscriberJob = Register-ObjectEvent -InputObject $tpc -EventName OnTracePeekEvent -SourceIdentifier $SessionName
+    Write-Host "TracePeek starting up..."
     if($null -eq $ProjectionStyle){$null = $tpc.StartPeek()}
     else{$null = $tpc.StartPeek($ProjectionStyle)}
+    Write-Host "TracePeek running."
+    Write-Host '!!! Press ALT+s when done to stop session and clean up resources !!!'
     $consoleCancellationRequested = $false
     while($consoleCancellationRequested -eq $false)
     {
@@ -41,25 +44,12 @@ function Start-TracePeek
             $keyPress = [Console]::ReadKey($true)
             if ($keyPress.Modifiers.HasFlag([System.ConsoleModifiers]::Alt) -and $keyPress.KeyChar -eq 's')
             {
-                Write-Host "Cleaning up..."
+                Write-Host "TracePeek stopping and cleaning up."
                 $consoleCancellationRequested = $true
                 $tpc.StopPeek()
             }
         }
     }
-
     Unregister-Event -SourceIdentifier $SessionName
     if($null -ne $eventSubscriberJob){Remove-Job -Id $eventSubscriberJob.Id -Force}
 }
-
-<# 
-function New-TracePeekEventListeningDescriptor
-{
-    param([string[]]$ProviderName)
-    foreach($provider in $ProviderName)
-    {
-        $descriptor = New-Object -TypeName TracePeek.EventListeningDescriptor
-        $descriptor.ProviderName = $provider
-        $descriptor
-    }
-} #>
