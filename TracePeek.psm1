@@ -9,7 +9,7 @@ function New-TracePeekController
         [Parameter(Mandatory=$true)]
         [string]$SessionName
     )
-        New-Object -TypeName TracePeek.TracePeekController -ArgumentList $SessionName
+    New-Object -TypeName TracePeek.TracePeekController -ArgumentList $SessionName
 }
 
 function Start-TracePeek
