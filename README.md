@@ -14,7 +14,8 @@ TracePeek fills a narrow gap in the ETW ecosystem (interactivity and PowerShell 
 Also, TracePeek parses each event to support easy interactive use and is not intended for high-volume events.
 
 ## Getting started
-Powershell example:```powershell
+Powershell example:
+```powershell
 Install-Module TracePeek
 
 Start-TracePeek -Providers "Microsoft-Windows-Wordpad" | Select-Object -Property ProviderName,Message
