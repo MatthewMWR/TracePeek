@@ -1,5 +1,5 @@
 # TracePeek
-Interactive Event Tracing for Windows (ETW)- live as the events fire. Works with cmdline, C#/.Net Core, and especially PowerShell 6.
+TracePeek provides live (as they fire) interactive Event Tracing for Windows (ETW). It works with cmdline, C#/.Net Core, and is especially optimized for PowerShell 6.
 
 ## When to use TracePeek
 For interactive ETW scenarios, TracePeek provides a lightweight alternative to the cumbersome "install-WPT-then-log-and-repro-then-open-ETL-oops-bad-timing-try-logging-again..." pattern. For example:  
@@ -80,7 +80,7 @@ For providers with a mix of high and low volume events, filtering by ETW Levels 
 TracePeek doesn't do anything special with provider names. The caller is subject to normal ETW behavior, for example:
 - Specifying the provider by GUID (like -Providers 'DBE9B383-7CF3-4331-91CC-A3CB16A3B538') works reliably, but sacrifices readability and puts the burden on the caller to learn the GUID
 - Specifying the provider by name (like -Providers 'Microsoft-Windows-Winlogon') is more readable, but works only if that name gets resolved to a GUID at execution time. The two known cases of this are:
-  - The provider name is registered with the OS (see logman.exe providers for providers known to the OS) 
+  - The provider name is registered with the OS (run *logman.exe providers* for the list of providers registered with the OS) 
   - -OR- The original author of the provider used the Tracelogging/EventSource pattern and did not declare a specific GUID. In this pattern, the effective provider GUID is a function of the provider name, so it can always be resolved. Unfortunately, there is no OS based discovery mechanism in the Tracelogging/EventSource pattern, so the caller would need to learn out-of-band about the provider and its use of this pattern.
 
 ### What about the NT kernel provider?
