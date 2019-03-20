@@ -11,7 +11,7 @@ All of this assumes some level of expertise with Windows and ETW. For example, T
 ## When *not* to use TracePeek
 TracePeek fills a narrow gap in the ETW ecosystem (interactivity and PowerShell friendliness) and does not compete with tools like WPT/WPR/xperf/WPA/PerfView, et al. which are already great at other workflows.
 
-Also, TracePeek parses each event to support easy interactive use and is likely the wrong choice for high-volume events.
+Also, TracePeek parses each event to support easy interactive use and is not intended for high-volume events.
 
 ## Getting started
 Powershell example:```powershell
