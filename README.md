@@ -1,8 +1,8 @@
 # TracePeek
-TracePeek provides live (as they fire) interactive Event Tracing for Windows (ETW). It works with cmdline, C#/.Net Core, and is especially optimized for PowerShell 6.
+TracePeek provides developers, power users, and IT Pros with live interactive Event Tracing for Windows (ETW). TracePeek works with cmdline, C#/.Net Core, and is particularly optimized for PowerShell 6.
 
 ## When to use TracePeek
-For interactive ETW scenarios, TracePeek provides a lightweight alternative to the cumbersome "install-WPT-then-log-and-repro-then-open-ETL-oops-bad-timing-try-logging-again..." pattern. For example:  
+For ETW scenarios which could be interactive, TracePeek provides a lightweight alternative to the cumbersome "install-WPT-then-log-and-repro-then-open-ETL-oops-bad-timing-try-logging-again-then-open-again..." pattern. For example:  
 * Interactively waiting for some system event to occur 
 * Exploring a new feature to learn what events fire as you take different actions
 
