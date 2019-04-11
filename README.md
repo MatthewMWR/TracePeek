@@ -9,7 +9,7 @@ For ETW scenarios which could be interactive, TracePeek provides a lightweight a
 All of this assumes some level of expertise with Windows and ETW. For example, TracePeek assumes that you already know which providers are of interest to you.
 
 ## When *not* to use TracePeek
-TracePeek fills a narrow gap in the ETW ecosystem (interactivity and PowerShell friendliness) and does not compete with tools like WPT/WPR/xperf/WPA/PerfView, et al. which are already great at other workflows.
+TracePeek fills a narrow gap (interactivity and PowerShell friendliness) in the ETW ecosystem and does not compete with tools like WPT/WPR/xperf/WPA/PerfView, et al. which are already great at other workflows.
 
 Also, TracePeek parses each event to support easy interactive use and is not intended for high-volume events.
 
