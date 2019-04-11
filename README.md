@@ -1,5 +1,5 @@
 # TracePeek
-TracePeek provides developers, power users, and IT Pros with live interactive Event Tracing for Windows (ETW). TracePeek works with cmdline, C#/.Net Core, and is particularly optimized for PowerShell 6.
+TracePeek provides developers, power users, and IT Pros with live interactive Event Tracing for Windows (ETW). TracePeek works with cmdline, C#/.Net Core, and is particularly optimized for PowerShell Core (aka PowerShell 6). You can install Powershell Core for Windows here: https://github.com/PowerShell/PowerShell/releases
 
 ## When to use TracePeek
 For ETW scenarios which could be interactive, TracePeek provides a lightweight alternative to the cumbersome "install-WPT-then-log-and-repro-then-open-ETL-oops-bad-timing-try-logging-again-then-open-again..." pattern. For example:  
@@ -14,7 +14,8 @@ TracePeek fills a narrow gap in the ETW ecosystem (interactivity and PowerShell 
 Also, TracePeek parses each event to support easy interactive use and is not intended for high-volume events.
 
 ## Getting started
-Powershell 6 example:
+Powershell Core (aka PowerShell 6) example:
+Note: You can install PowerShell Core for Windows here: https://github.com/PowerShell/PowerShell/releases
 ```powershell
 Install-Module TracePeek
 
@@ -73,7 +74,7 @@ TracePeek is a thin wrapper around Vance Morrison's lovely TraceEvent library. T
 TraceEvent, and by extension TracePeek, can parse the payloads of Manifest style events and Tracelogging/EventSource style events. For old-school WPP events use other toolchains like tracefmt.
 
 ### Levels and Keywords
-For providers with a mix of high and low volume events, filtering by ETW Levels and Keywords can be necessary for effefficiently limiting event volume. Like xperf, TracePeek allows for passing Levels and Keywords along with provider names. For example, 
+For providers with a mix of high and low volume events, filtering by ETW Levels and Keywords is the most efficient way to limit event volume and avoid events you don't want. Like xperf, TracePeek allows for passing Levels and Keywords along with provider names. For example, 
 -Providers 'Microsoft-Windows-Winlogon:0xFFFF:0xFFFFFFFFFFFFFFFF' is equivalent to
 -Providers 'Microsoft-Windows-Winlogon'
 
@@ -82,7 +83,7 @@ TracePeek doesn't do anything special with provider names. The caller is subject
 - Specifying the provider by GUID (like -Providers 'DBE9B383-7CF3-4331-91CC-A3CB16A3B538') works reliably, but sacrifices readability and puts the burden on the caller to learn the GUID
 - Specifying the provider by name (like -Providers 'Microsoft-Windows-Winlogon') is more readable, but works only if that name gets resolved to a GUID at execution time. The two known cases of this are:
   - The provider name is registered with the OS (run *logman.exe providers* for the list of providers registered with the OS) 
-  - -OR- The original author of the provider used the Tracelogging/EventSource pattern and did not declare a specific GUID. In this pattern, the effective provider GUID is a function of the provider name, so it can always be resolved. Unfortunately, there is no OS based discovery mechanism in the Tracelogging/EventSource pattern, so the caller would need to learn out-of-band about the provider and its use of this pattern.
+  - -OR- The original author of the provider used the Tracelogging/EventSource pattern and did not declare a specific GUID. In this pattern the effective provider GUID is a function of the provider name, so it can always be resolved. Unfortunately, there is no built-in discovery mechanism for providers in the Tracelogging/EventSource pattern, so the caller would need to learn out-of-band about the existence of the provider and whether it uses this Name to Guid pattern. Typically would happen through documentation or through folk domain knowledge within a specific tech community.
 
 ### What about the NT kernel provider?
 The TraceEvent library can parse NT Kernel events, but given that kernel events tend to be very high volume I have never encountered a scenario where I wanted to use them with TracePeek. If there are cool scenarios for using TracePeek with the NT kernel provider, we could add support for named groups of kernel flags similar to xpert and PerfView.
