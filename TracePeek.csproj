@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="2.0.36" />
-    <PackageReference Include="System.Management.Automation" Version="6.2.0-preview.4" />
+    <PackageReference Include="System.Management.Automation" Version="6.2.0" />
   </ItemGroup>
 
   <ItemGroup>
