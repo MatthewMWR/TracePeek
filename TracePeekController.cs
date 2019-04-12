@@ -11,10 +11,8 @@ namespace TracePeek
 {
     public class TracePeekController : IDisposable
     {
-        public TracePeekController(string sessionName)
+        public TracePeekController(string sessionName = "TracePeek_DefaultSession")
         {
-            if(String.IsNullOrEmpty(sessionName))
-                sessionName = "TracePeek_DefaultSession";
             SessionName = sessionName;
             ThisTraceEventSession = new TraceEventSession(sessionName);
         }
