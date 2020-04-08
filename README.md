@@ -21,7 +21,8 @@ Install-Module TracePeek
 
 Start-TracePeek -Providers "Microsoft-Windows-Wordpad" | Select-Object -Property ProviderName,Message
 
-## Now launch Wordpad to get some events
+## Now launch Wordpad to get some events, you may need 
+## to wait a few seconds for events to appear due to buffering.
 ```
 ```
   Starting up...
